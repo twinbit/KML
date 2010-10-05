@@ -16,11 +16,16 @@ function template_preprocess_views_view_kml(&$vars) {
       $styles .= theme('kml_style', '1', $scale, $vars['options']);
     }
   }
-
+  
   foreach ($points as $point) {
-    $rows .= theme('kml_placemark', $point, $points);
+    if ($vars['options']['data_source']['provider'] == 'openlayers_wkt' && $point['wkt']) {
+      $rows .= theme('kml_placemark_wkt', $point, $points);
+    }
+    elseif ($vars['options']['data_source']['provider'] == 'lat_lon' && $point['point']) {
+      $rows .= theme('kml_placemark', $point, $points);
+    }
   }
-     
+  
   $vars['rows'] = $rows;
   $vars['style'] = $styles;
   $vars['viewtitle'] = $view->name;  
@@ -33,10 +38,20 @@ function template_preprocess_views_view_kml(&$vars) {
 /**
  * Preprocess for theme('kml_placemark').
  */
-function template_preprocess_kml_placemark(&$vars) {  
+function template_preprocess_kml_placemark(&$vars) {
   $vars['name'] = filter_xss_admin($vars['point']['name']);
   $vars['description'] = filter_xss_admin($vars['point']['description']);
   $vars['coords'] = check_plain($vars['point']['point']);
+  $vars['styleURL'] = check_plain($vars['point']['styleURL']);
+}
+
+/**
+ * Preprocess for theme('kml_placemark').
+ */
+function template_preprocess_kml_placemark_wkt(&$vars) {
+  $vars['name'] = filter_xss_admin($vars['point']['name']);
+  $vars['description'] = filter_xss_admin($vars['point']['description']);
+  $vars['geometry'] = $vars['point']['wkt'];
   $vars['styleURL'] = check_plain($vars['point']['styleURL']);
 }
 

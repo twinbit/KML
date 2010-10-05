@@ -1,6 +1,7 @@
 <?php
 // $Id: kml.module,v 1.8.2.2 2010/06/10 17:36:50 tmcw Exp $
 
+
 /**
  * @file
  * KML module.
@@ -26,6 +27,12 @@ function kml_theme() {
       'arguments' => array('point' => array(), 'points' => array()),
       'file' => 'kml_views.theme.inc',
       'template' => 'kml-placemark',
+      'path' => $path . "/views",
+    ),
+    'kml_placemark_wkt' => array(
+      'arguments' => array('point' => array(), 'points' => array()),
+      'file' => 'kml_views.theme.inc',
+      'template' => 'kml-placemark-wkt',
       'path' => $path . "/views",
     ),
     'kml_style' => array(
