@@ -219,6 +219,8 @@ class views_plugin_style_kml extends views_plugin_style {
         $lat = $field[$options['lat']];
         $lon = $field[$options['lon']];
         $point['point'] = $lon . ',' . $lat . ',0';
+        unset($point['lat']);
+        unset($point['lon']);
       break;
     }    
   }
@@ -256,12 +258,6 @@ class views_plugin_style_kml extends views_plugin_style {
 
       /* Lat/Long pre render */
       $this->kml_points_prerender($this->options['data_source'], $row, $point);
-
-      if ($point['lon'] && $point['lat']) {
-        $point['point'] = $point['lon'] . ',' . $point['lat'] . ',0';
-        unset($point['lat']);
-        unset($point['lon']);
-      }
       
       if ($this->options['linestring']['enable']) {
         $points[$point['group']][] = $point;

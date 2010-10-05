@@ -46,7 +46,7 @@ function template_preprocess_kml_placemark(&$vars) {
 }
 
 /**
- * Preprocess for theme('kml_placemark').
+ * Preprocess for theme('kml_placemark_wkt').
  */
 function template_preprocess_kml_placemark_wkt(&$vars) {
   $vars['name'] = filter_xss_admin($vars['point']['name']);
