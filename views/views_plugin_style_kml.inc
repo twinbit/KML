@@ -25,6 +25,12 @@ class views_plugin_style_kml extends views_plugin_style {
    */
   function attach_to($display_id, $path, $title) {
     $url_options = array('html' => TRUE);
+
+    $query = $this->view->get_exposed_input();
+    if ($query) {
+      $url_options['query'] = $query;
+    }
+
     $image = theme('image', $this->feed_image);
     $this->view->feed_icon .= l($image, $path, $url_options);
   }
