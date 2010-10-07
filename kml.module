@@ -29,6 +29,11 @@ function kml_theme() {
       'template' => 'kml-placemark',
       'path' => $path . "/views",
     ),
+    'kml_feed_image' => array(
+      'arguments' => array(),
+      'file' => 'kml_views.theme.inc',
+      'path' => $path . "/views",
+    ),
     'kml_placemark_wkt' => array(
       'arguments' => array('point' => array(), 'points' => array()),
       'file' => 'kml_views.theme.inc',
