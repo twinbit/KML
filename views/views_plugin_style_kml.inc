@@ -112,6 +112,25 @@ class views_plugin_style_kml extends views_plugin_style {
         );
       }
 
+      /* Node URL*/
+      $form['fields']['node_url'] = array(
+          '#type' => 'checkbox',
+          '#title' => t('Link to node'),
+          '#description' => t("As we can't use html on Google Earth marker, we place the link to node under description. Attention, using this option will strip any html tags on title field."),
+          '#default_value' => $this->options['fields']['node_url'],
+          '#return_value' => 1,
+          '#required' => FALSE
+      );
+      $form['fields']['node_url_title'] = array(
+          '#type' => 'select',
+          '#title' => t('Link title'),
+          '#options' => $field_names,
+          '#default_value' => $this->options['fields']['node_url_title'],
+          '#process' => array('views_process_dependency'),
+          '#dependency' => array('edit-style-options-fields-node-url' => array(1)),
+          '#required' => FALSE
+      );
+
 
       $form['data_source'] = array(
        '#type' => 'fieldset',
@@ -261,6 +280,12 @@ class views_plugin_style_kml extends views_plugin_style {
         }
       }
 
+      /* Save point nid if node url is set */
+      if (($nid = $this->options['fields']['node_url']) && ($title = $this->options['fields']['node_url_title'])) {
+        $point['node_nid'] = $row['nid'];
+        $point['node_url_title'] = strip_tags($row[$title]);
+      }
+     
       /* Lat/Long pre render */
       $this->kml_points_prerender($this->options['data_source'], $row, $point);
       

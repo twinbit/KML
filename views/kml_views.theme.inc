@@ -7,7 +7,8 @@
  */
 
 function template_preprocess_views_view_kml(&$vars) {
-  $view = $vars['view'];  
+  $view = $vars['view'];
+  
   $points = $view->style_plugin->map_rows($vars['rows']);
   $styles = '';
   
@@ -35,6 +36,18 @@ function template_preprocess_views_view_kml(&$vars) {
   drupal_set_header("Content-Disposition: attachment; filename=$filename");
 }
 
+
+/**
+ * Internal preprocess for theme('kml_node_url').
+ */
+function _kml_preprocess_node_url(&$vars) {
+  if (($vars['point']['node_nid']) && ($vars['point']['node_url_title'])) {
+    $vars['url'] = theme('kml_node_url', $vars['point']['node_nid'], $vars['point']['node_url_title']);
+    $vars['name'] = strip_tags($vars['name']);
+    $vars['description'] = $vars['url'] . $vars['description'];
+  }
+}
+
 /**
  * Preprocess for theme('kml_placemark').
  */
@@ -43,6 +56,7 @@ function template_preprocess_kml_placemark(&$vars) {
   $vars['description'] = filter_xss_admin($vars['point']['description']);
   $vars['coords'] = check_plain($vars['point']['point']);
   $vars['styleURL'] = check_plain($vars['point']['styleURL']);
+  _kml_preprocess_node_url($vars);
 }
 
 /**
@@ -53,6 +67,15 @@ function template_preprocess_kml_placemark_wkt(&$vars) {
   $vars['description'] = filter_xss_admin($vars['point']['description']);
   $vars['geometry'] = $vars['point']['wkt'];
   $vars['styleURL'] = check_plain($vars['point']['styleURL']);
+  _kml_preprocess_node_url($vars);
+}
+
+/**
+ * Preprocess for theme('kml_node_url').
+ */
+function template_preprocess_kml_node_url(&$vars) {
+  $vars['nid'] = $vars['nid'];
+  $vars['title'] = $vars['title'];
 }
 
 /**

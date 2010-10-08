@@ -46,5 +46,11 @@ function kml_theme() {
       'template' => 'kml-style',
       'path' => "$path/views",
     ),
+    'kml_node_url' => array(
+      'arguments' => array('nid' => array(), 'title' => array()),
+      'file' => 'kml_views.theme.inc',
+      'template' => 'kml-node-url',
+      'path' => "$path/views",
+    ),
   );
 }
